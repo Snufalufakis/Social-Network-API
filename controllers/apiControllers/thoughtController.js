@@ -24,7 +24,7 @@ const createThought = async (req, res) => {
 const thoughtById = async (req, res) => {
   try {
     const thoughtId = req.params.thoughtId;
-    const thoughtData = await Thought.findById(thoughtId);
+    const thoughtData = await Thought.findById({ _id: thoughtId });
     res.json(thoughtData);
   } catch (error) {
     console.log(error, "E L 30 TC");
@@ -36,9 +36,13 @@ const updateThoughtById = async (req, res) => {
   try {
     const thoughtId = req.params.thoughtId;
     const body = req.body;
-    const thoughtData = await Thought.findOneAndUpdate(thoughtId, body, {
-      new: true,
-    });
+    const thoughtData = await Thought.findOneAndUpdate(
+      { _id: thoughtId },
+      { $set: body },
+      {
+        new: true,
+      }
+    );
     res.json(thoughtData);
   } catch (error) {
     console.log(error, "E L 44 TC");
@@ -49,7 +53,7 @@ const updateThoughtById = async (req, res) => {
 const deleteThoughtById = async (req, res) => {
   try {
     const thoughtId = req.params.thoughtId;
-    const thought = await Thought.findByIdAndDelete(thoughtId);
+    const thought = await Thought.findByIdAndDelete({ _id: thoughtId });
     res.json(thought);
   } catch (error) {
     console.log(error, "E L 55 TC");
@@ -62,14 +66,9 @@ const addReaction = async (req, res) => {
     const thoughtId = req.params.thoughtId;
     const body = req.body;
     const reaction = await User.create(body);
-    const thought = await Thought.findOneAndUpdate(
-      {
-        _id: thoughtId,
-      },
-      {
-        $push: { reactions: reaction._id },
-      }
-    );
+    const thought = await Thought.findOneAndUpdate(thoughtId, {
+      $push: { reactions: reaction._id },
+    });
     res.json(thought);
   } catch (error) {
     console.log(error, "E L 75 TC");

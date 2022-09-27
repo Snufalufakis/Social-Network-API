@@ -8,11 +8,11 @@ router.route("/").post(userController.createUser);
 // get single user by id
 router.route("/:userId").get(userController.userById);
 // update single user by id
-router.route("/:userId").post(userController.updateUserById);
+router.route("/:userId").put(userController.updateUserById);
 // delete single user by id
 router.route("/:userId").delete(userController.deleteUserById);
 //add a new friend to a user's friend list
-router.route("/:userId/friends/:friendId").post(userController.addNewFriend);
+router.route("/:userId/friends/:friendId").put(userController.addNewFriend);
 //remove a friend from a user's friend list
 router.route("/:userId/friends/:friendId").delete(userController.deleteFriend);
 
